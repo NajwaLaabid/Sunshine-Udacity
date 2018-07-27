@@ -16,6 +16,8 @@
 
 package com.example.android.sunshine.app;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -24,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class DetailActivity extends ActionBarActivity {
 
@@ -33,7 +36,7 @@ public class DetailActivity extends ActionBarActivity {
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new DetailFragment())
                     .commit();
         }
     }
@@ -64,9 +67,10 @@ public class DetailActivity extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    @SuppressLint("ValidFragment")
+    public class DetailFragment extends Fragment {
 
-        public PlaceholderFragment() {
+        public DetailFragment() {
         }
 
         @Override
@@ -74,6 +78,16 @@ public class DetailActivity extends ActionBarActivity {
                                  Bundle savedInstanceState) {
 
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+            Intent intent = getActivity().getIntent();
+
+            if( intent != null && intent.hasExtra(Intent.EXTRA_TEXT) ) {
+                // Get the Intent that started this activity and extract the string
+                String message = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+                // Capture the layout's TextView and set the string as its text
+                ((TextView) rootView.findViewById(R.id.forecastDetail)).setText(message);
+            }
+
             return rootView;
         }
     }

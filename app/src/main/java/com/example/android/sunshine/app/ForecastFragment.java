@@ -15,6 +15,8 @@
  */
 package com.example.android.sunshine.app;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -116,10 +118,12 @@ public class ForecastFragment extends Fragment {
         listView.setAdapter(mForecastAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+            @SuppressLint("LongLogTag")
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String forecast = mForecastAdapter.getItem(position);
-                Toast.makeText(getActivity(), forecast, Toast.LENGTH_SHORT).show();
+                String forecast = mForecastAdapter.getItem(position); // passes the "adapter" element
+                Intent downloadIntent = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT, forecast);
+                startActivity(downloadIntent);
             }
         });
 
